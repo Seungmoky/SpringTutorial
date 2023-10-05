@@ -1,6 +1,7 @@
 package hello.hellospring.repository;
 
 import hello.hellospring.domain.Member;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,5 +13,4 @@ public interface MemberRepository {
     Optional<Member> findByName(String name);
     List<Member> findAll();
 
-    void clearStore();
 }

@@ -3,7 +3,9 @@ package hello.hellospring.service;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 import hello.hellospring.domain.Member;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +24,18 @@ public class MemberService {
      * 회원가입
      */
     public Long join(Member member) {
+        long start = System.currentTimeMillis();
         //같은 이름이 있는 중복 회원 X
-        validateDuplicateMember(member); //중복 회원 검증
-        memberRepository.save(member);
-        return member.getId();
+        try {
+            validateDuplicateMember(member); //중복 회원 검증
+            memberRepository.save(member);
+            return member.getId();
+        } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("join = " + timeMs + "ms");
+
+        }
     }
 
     private void validateDuplicateMember(Member member) {
